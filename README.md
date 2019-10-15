@@ -11,3 +11,4 @@ Complete a reading plan in order to acquire the needed  knowledge to become a ba
 计算机网络 与 操作系统 《TCP/IP》编程 图解HTTP:  | 20年01月
 《大型网站技术架构》 与HeadFirst设计模式   | 20年02月
 
+## 与此同时一直刷算法，每天两道，提交并记录
