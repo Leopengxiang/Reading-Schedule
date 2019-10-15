@@ -1,0 +1,42 @@
+//  public class ListNode {
+//       int val;
+//       ListNode next;
+//       ListNode(int x) { val = x;}
+//  }
+ 
+class SumOfTwoNumber {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode pre = new ListNode(0);          // 巧妙之处 一   设置预先的守卫节点， 真正的头节点在守卫节点之后
+        ListNode cur = pre;
+        int forward = 0;
+        while(l1 != null || l2 != null) {
+            int x = l1 == null?  0 : l1.val;
+            int y = l2 == null?  0 : l2.val;      //     三元操作符， 本题编程巧妙之处二， 用 x, y 来收集 对应l1, l2 的值
+            int total = x + y + forward;
+
+            forward = total / 10;
+            total = total % 10;
+            cur.next = new ListNode(total);
+            cur = cur.next;
+            
+            if (l1 != null) {
+                l1 = l1.next;
+            }                                               //  编程巧妙之处三               当某个链表遍历到尾端后， 其引用不再发生改变。
+
+            if (l2 != null) {
+                l2 = l2.next;
+            }
+        }
+        
+        if (forward > 0) {
+            cur.next = new ListNode(forward);              
+        }
+        
+        return pre.next;
+        
+    }
+  
+}
+
+
+小技巧：对于链表问题，返回结果为头结点时，通常需要先初始化一个预先指针 pre，该指针的下一个节点指向真正的头结点head。使用预先指针的目的在于链表初始化时无可用节点值，而且链表构造过程需要指针移动，进而会导致头指针丢失，无法返回结果
