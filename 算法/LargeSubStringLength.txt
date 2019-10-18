@@ -1,0 +1,108 @@
+/*   初始答案（自己想的）
+
+*/
+
+
+import java.util.*;
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.length() == 0)
+            return 0;
+        int[] codePoints = s.codePoints().toArray();                       //将字符串转换成码点进行遍历， 可以让其具有兼容不常用符号的特性
+        int maxCount = 0;
+        int count = 0;
+        Map<Integer,Integer> uniqueCodes = new HashMap<>();
+        for (int i = 0; i < codePoints.length; i++) {
+            if (uniqueCodes.containsKey(codePoints[i])) {
+                int rIndex = uniqueCodes.get(codePoints[i]);                                  
+                uniqueCodes = new HashMap<Integer, Integer>();                 //需重建hashmap, 这一步可以优化。双指针会更加高效不用走回头路。
+                uniqueCodes.put(codePoints[rIndex + 1], rIndex + 1);      
+                i = rIndex + 1;
+                count = 1;
+            } else {
+                uniqueCodes.put(codePoints[i], i);
+                count++;
+            }
+            if(maxCount < count) {
+                maxCount = count;
+            }
+        }
+        return maxCount;
+    }
+}
+
+
+import java.util.*;
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.length() == 0)
+            return 0;
+
+        int[] codePoints = s.codePoints().toArray(); 
+        int len = codePoints.length;                      
+        int maxLength = 0;
+        Map<Integer,Integer> uniqueCodes = new HashMap<>();
+        
+        for (int i = 0, j = 0; j < len; j++) {                                              // 右端滑动
+            if (uniqueCodes.containsKey(codePoints[j])) {
+                int rpeatNIndex = uniqueCodes.get(codePoints[j]);                  
+                i = Math.max(i, rpeatNIndex);                             // 滑动窗口，确保i必须是不断增大的, 左端滑动
+            }
+            maxLength = Math.max(maxLength, j - i + 1);         
+            uniqueCodes.put(codePoints[j], j +1);                 // 定义一个 map 数据结构存储 (k, v)，其中 key 值为字符，value 值为字符位置 +1，加 1 表示从字符位置后一个才开始不重复
+        }
+        return maxLength;
+    }
+}
+
+// 并没有快很多, 由于之前转换成码点数组耗时量大
+
+
+
+// 
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length(), ans = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        for (int end = 0, start = 0; end < n; end++) {
+            char alpha = s.charAt(end);
+            if (map.containsKey(alpha)) {
+                start = Math.max(map.get(alpha), start);
+            }
+            ans = Math.max(ans, end - start + 1);
+            map.put(s.charAt(end), end + 1);
+        }
+        return ans;
+    }
+}
+
+// 当数组是256时
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length(), ans = 0;
+        int [] index  = new int[256];
+        for (int end = 0, start = 0; end < n; end++) {
+            start = Math.max(index[charAt(end)], start);
+            ans = Math.max(ans, end - start + 1);
+            Index[s.charAt(end)] = end + 1;
+        }
+        return ans;
+    }
+}
+
+标签：滑动窗口
+暴力解法时间复杂度较高，会达到 O(n^2)O(n 
+2
+ )，故而采取滑动窗口的方法降低时间复杂度
+定义一个 map 数据结构存储 (k, v)，其中 key 值为字符，value 值为字符位置 +1，加 1 表示从字符位置后一个才开始不重复
+我们定义不重复子串的开始位置为 start，结束位置为 end
+随着 end 不断遍历向后，会遇到与 [start, end] 区间内字符相同的情况，此时将字符作为 key 值，获取其 value 值，并更新 start，此时 [start, end] 区间内不存在重复字符
+无论是否更新 start，都会更新其 map 数据结构和结果 ans。
+时间复杂度：O(n)O(n)
+
+作者：guanpengchn
+链接：https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/hua-jie-suan-fa-3-wu-zhong-fu-zi-fu-de-zui-chang-z/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
