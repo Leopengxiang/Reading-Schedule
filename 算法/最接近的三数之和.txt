@@ -1,0 +1,69 @@
+class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int diff = Integer.MAX_VALUE;
+        int sumNum = 0;
+        for (int i = 0; i < nums.length - 2; i++) {
+            for (int j = i + 1 ; j < nums.length - 1; j++) {
+                int t = target - nums[i] - nums[j];
+                int ind = binarySearch(nums, nums.length - 1, j+1, t);
+                int sumNew = nums[i] + nums[j] + nums[ind];
+                int diffNew = Math.abs(target - sumNew);
+                if (diffNew < diff) {
+                    System.out.println(sumNew);
+                    diff = diffNew;
+                    sumNum = sumNew;
+                }
+            }
+        }
+        return sumNum;
+    }
+    
+    public int binarySearch(int[] nums, int hi, int lo, int t) {
+        if (hi - lo <= 1) {
+            if (Math.abs(nums[hi] - t) > Math.abs(nums[lo] - t)) {          
+                return lo;
+            }
+            return hi;
+        }
+
+        int mid = lo + (hi - lo) / 2;
+        if (nums[mid] > t) {
+            return binarySearch(nums, mid, lo, t);    //  不能把middle去掉因为nums[mid] > t, nums[mid -1] <=t ;不能确定哪个离t更近
+        } else if (nums[mid] < t) {
+            return binarySearch(nums, hi, mid, t);          // 同上mid不能去掉
+        } else
+            return mid;
+    }
+}
+
+// 二分法
+
+
+// 双指针
+class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int dis = Integer.MAX_VALUE;
+        int sumNum = 0;
+        for (int i = 0; i < nums.length - 2; i++) {
+            int start = i + 1, end = nums.length -1;
+            while (j < k) {
+                int sumNew = nums[i] + nums[start] + nums[end];
+                int diff = sumNew - target;                           // 根据diff来确定指针移动的方向
+                if (Math.abs(diff) < dis) {
+                    dis = Math.abs(diff);
+                    sumNum = sumNew;
+                }
+                if (diff < 0) {
+                    start++;
+                } else if (diff > 0) {
+                    end--;
+                } else {
+                    return numNew;
+                }    
+            }
+        }
+        return sumNum;
+    }
+}

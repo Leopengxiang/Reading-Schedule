@@ -1,0 +1,50 @@
+class Solution {
+    public int myAtoi(String str) {
+        if (str == null) {
+            return 0;
+        } 
+        //鲁棒检测
+        int i = 0; 
+        int flag = 1; // flag 1 为正 ， -1 为负
+        int res = 0;
+        for(; i < str.length(); i++) {
+            if (str.charAt(i) != ' ')
+                break;
+        }
+        //跳过前端空格
+        if (i < str.length()) {
+            char x = str.charAt(i);
+            if (x == '+') {
+                i++;
+            }else if (x == '-') {
+                flag = -1;
+                i++;
+            }else if (x > '0' && x <= '9'){
+                res = x - '0';
+                i++;
+            }else {
+                 return 0;
+            }      
+        }
+        // 判断第一个字符。
+        
+        while (i < str.length()) {
+             int dev = str.charAt(i) - '0';    //当前个位上的数字     
+            if(dev >= 0 && dev <= 9) {
+                if (flag == 1 && (res > Integer.MAX_VALUE / 10      //正数溢出
+                    || (res == Integer.MAX_VALUE / 10 && dev > 7))) {
+                    return Integer.MAX_VALUE;
+                } else if (flag == -1 && (res > Integer.MAX_VALUE / 10     //负数溢出
+                    || (res == Integer.MAX_VALUE / 10 && dev > 8))) {
+                    return Integer.MIN_VALUE;
+                } else {
+                    res = res * 10 + dev;          
+                    i++;
+                }
+            } else {
+                break;
+            }
+        }  
+        return res * -1;
+    }
+}

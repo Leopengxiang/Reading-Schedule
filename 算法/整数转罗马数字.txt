@@ -1,0 +1,17 @@
+class Solution {
+    public String intToRoman(int num) {
+        int[] nums = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] rome = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < nums.length; i++) {
+            while (nums[i] <= num) {
+                result.append(rome[i]);
+                num = num - nums[i];
+            }
+        }
+        return result.toString();
+    }
+}
+
+
+// 贪心算法，跟找钱一个道理， 例如一个售货员需要找给顾客513元， 为了是她取钱的张数最少，她应该找给顾客5个一百， 1个十块， 和3个一块。 从面值最大的开始！

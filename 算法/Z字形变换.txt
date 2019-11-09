@@ -1,0 +1,34 @@
+class Solution {
+    public String convert(String s, int numRows) {
+        if (numRows == 1) 
+            return s;
+        
+        // 使用StringBuffer数组保存每行应该打印的字符；
+        StringBuffer[] rows = new StringBuffer[numRows];
+        for (int i = 0; i < rows.length; i++) {
+            rows[i] = new StringBuffer();
+        }
+
+        // 设置一个方向变量， 指明行索引的变化方向，在0，和num - 1出方向会改变。  
+        boolean goingDown = true;
+        int curRow = 0;
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            rows[curRow].append(chars[i]);
+            curRow += goingDown? 1 : -1;
+            if (curRow == 0 || curRow == numRows - 1) 
+                goingDown = !goingDown;
+        }
+        
+        StringBuffer result = new StringBuffer();
+        for (StringBuffer sb : rows) {
+            result.append(sb);
+        }
+        
+        return result.toString();
+    }
+}
+
+// 1. 编译时所犯错误， 没预先设定变量类型
+// 2. 使用new 调用构造函数时， 后面老是忘了加（）
+// 3. if语句中判断相等老是写成了=，
