@@ -1,0 +1,85 @@
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> ans = new LinkedList<>();
+        if (nums == null || nums.length == 0) {
+            return ans;
+        }
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 3; i++) {
+            if (i >= 1 && nums[i] == nums[i-1]) 
+                continue;
+            for (int j = i + 1; j < nums.length - 2; j++) {
+                if (j > i + 1 && nums[j] == nums[j-1]) {
+                    // j > i + 1 这个条件不要搞成j > 2;
+                    continue;
+                }
+                int start = j + 1, end = nums.length - 1;
+                while (start < end) {
+                    int cmp = nums[i] + nums[j] + nums[start] + nums[end] - target;
+                    if (cmp > 0) {
+                        end--;
+                    } else if (cmp < 0) {
+                        start++;
+                    } else {
+                        ans.add(Arrays.asList(nums[i], nums[j], nums[start], nums[end]));
+                        start++;
+                        while (start < end && nums[start] == nums[start - 1]) {
+                            start++;  //start < end 的判断条件不能丢，不然会越界
+                        }
+                        end--;
+                        while (start < end && nums[end] == nums[end + 1]) {
+                            end--;
+                        }
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+}
+// 双指针解法
+n数之和系列，以四个数为例，排序完再输出，输出中的每一项的四个数都是递增的。
+排序是去重的关键。
+-2 -1  0  0 1 2
+
+// 二分查找解法
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> ans = new LinkedList<>();
+        if (nums == null || nums.length < 4) {
+            return ans;
+        }
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 3; i++) {
+            if (i >= 1 && nums[i] == nums[i-1]) continue;
+            for (int j = i + 1; j < nums.length - 2; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+                for (int k = j + 1; k < nums.length - 1; k++) {
+                    if (k > j + 1  && nums[k] == nums[k -1]) continue;
+                    int key = target - (nums[i] + nums[j] + nums[k]);
+                    int index = bs(nums, key, k + 1, nums.length - 1);
+                    if (index != -1) {
+                        List<Integer> temp = new LinkedList<>();
+                        temp.add(nums[i]);
+                        temp.add(nums[j]);
+                        temp.add(nums[k]);
+                        temp.add(nums[index]);
+                        ans.add(temp);
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+    
+    private static int bs(int[] nums, int key, int lo, int hi) {
+        if (lo > hi) {
+            return -1;
+        }
+        int mid = lo + (hi - lo) / 2;
+        if   (key > nums[mid])  return bs(nums, key, mid + 1, hi);
+        else if (key < nums[mid])  return bs(nums, key, lo, mid - 1);
+        else return mid;
+    }
+}
+ 
