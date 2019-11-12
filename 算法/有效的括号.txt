@@ -1,0 +1,32 @@
+class Solution {
+    public boolean isValid(String s) {
+        if (s == null || s.length() == 0) {
+            return true;
+        }
+        if (s.length() % 2 != 0) {
+            return false;
+        }
+
+        Map<Character, Character> maping = new HashMap<>();
+        maping.put('(', ')');
+        maping.put('[', ']');
+        maping.put('{', '}');
+
+        Stack<Character> left = new Stack<>();
+        int i = 0;
+        while(i < s.length()) {
+            if (maping.containsKey(s.charAt(i))) {
+                left.push(s.charAt(i));
+                i++;
+            } else if (!left.isEmpty() && maping.get(left.pop()) == s.charAt(i)) {  // 排除掉空栈的情况
+                i++;
+            } else {
+                return false;
+            }
+        }
+        return left.isEmpty();   // 最后的栈一定是空的
+    }
+}
+
+// 有效的括号内部也是有效的括号。
+// 利用数据结构栈， 左括号就进栈，右括号就出栈并对比， 出栈时注意空栈情况

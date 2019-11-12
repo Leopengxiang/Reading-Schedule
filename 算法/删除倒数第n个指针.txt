@@ -1,0 +1,30 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode pre = new ListNode(1);
+        pre.next = head;
+        ListNode fast = pre, slow = pre;
+        while (n > 0) {
+            fast = fast.next;
+            n--;
+        }
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        slow.next = slow.next.next;
+        return pre.next;
+    }
+}
+
+
+// 解题关键在于找到被删节点的前一个节点代号slow。slow.next = slow.next.next;
+// 使用快慢指针实现一次遍历就能找到倒数第n个指针之前的那个指针，具体实施方法，让fast先走n步，此时fast在第n个节点， 而slow在第0个节点， 之后让fast和slowy一同往前走， 当fast到达最后那个节点时， slow到达倒数第n+1个节点。
+// 使用预设指针给第一个节点前置一个节点就可以归并删去第一个节点没有前置节点的特殊情况。   
