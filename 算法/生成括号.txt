@@ -1,0 +1,59 @@
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> ans = new LinkedList<>();
+        backTrack(ans, "", n, 0, 0);
+        return ans;
+    }
+
+    private void backTrack(List<String> ans, String now, int max, int leftP, int rightP) {
+        if (now.length() == 2 * max) {
+            ans.add(now);
+            return;
+        }
+        if (leftP < max) {
+            backTrack(ans, now + "(", max, leftP + 1, rightP);
+        }
+        if (rightP < leftP) {
+            backTrack(ans, now + ")", max, leftP, rightP + 1);
+        }
+    }
+}
+
+// 回溯法，重要的是在于，递归的判断条件，也就是允许如何加括号的方式
+// 1.只要当左括号小于括号的对数时，随时都可以加左括号
+// 2.当右括号的个数小于左括号的个数时可以添加右括号
+满足以上两个条件，形成的括号序列一定是有效的括号序列
+
+// 动态规划解法
+
+
+import java.util.ArrayList;
+
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        
+        //memory[i] contain all the combination of string with i pairs
+        List<String>[] memory = new List[n+1];
+        memory[0] = new ArrayList<String>();
+        memory[0].add("");
+        for(int i=1;i<n+1;i++){
+            memory[i] = new ArrayList<String>();
+            for(int j=1;j<=i;j++){
+                for(String starting : memory[j-1]){
+                   for(String rest: memory[i-j]){
+                        memory[i].add("("+starting+")"+rest);
+                    } 
+                }              
+            }
+        }        
+        return memory[n];       
+    }    
+}
+// 
+添加1对括号可以让n-1对括号变成n对括号，现在考虑如何添加这一对括号：
+左括号“（”一定出先在最左边， 所以组合方式其实是由右括号的位置所决定的。
+转换公式：
+g(n) = "(" + left + ")" + right;
+这里的left，和right必须是有效的括号序列，而left和right的对数必须满足
+n(left) + n(right) + 1 = n; 且n(left) 和 n(right)分别大于0； 
+所以n(left)的取值范围是0 ~ n-1;
