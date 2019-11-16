@@ -1,0 +1,28 @@
+class Solution {
+    public double myPow(double x, int n) {
+        if (n >= 0) 
+            return pow(x, n);
+        else
+            return 1 / pow(x, -n);
+    }
+
+    private double pow(double x, int n) {
+        if (n == 1) {
+            return x;
+        } 
+        if (n == 0) {
+            return 1;
+        }
+        double half = pow(x, n / 2);
+        if (n % 2 == 0) {
+            return half * half;
+        } else {
+            return half * half * x;
+        }
+    }
+}
+
+
+// 二分法，注意不要写成
+return pow(x, n/2) * pow(x, n/2) * pow(x, n % 2)
+这样子会增加递归深度，同一pow(x, n/2)计算两次， 导致溢出， 应将其值通过half保存下来。
