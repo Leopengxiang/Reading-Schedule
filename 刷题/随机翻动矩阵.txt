@@ -1,0 +1,38 @@
+class Solution {
+    private HashMap<Integer, Integer> visitedMap;
+    private int n_cols;
+    private int n_rows;
+    private int size;
+
+    public Solution(int n_rows, int n_cols) {
+        this.n_cols = n_cols;
+        this.n_rows = n_rows;
+        this.size = n_rows * n_cols;
+        visitedMap = new HashMap<Integer, Integer>();
+
+    }
+    
+    public int[] flip() {
+        int randN = (int)(Math.random() * --size);
+        while (visitedMap.containsKey(randN)) {
+            randN = visitedMap.get(randN);
+        }
+        // 当randN已经被映射过，可以将randN换成已经被randN被映射了的oldsize
+        visitedMap.put(randN, size);
+        int[] re = {randN / n_cols, randN % n_cols};
+	//一维数组向二维数组的转化
+        return re;
+    }
+    
+    public void reset() {
+        visitedMap = new HashMap<>();
+        size = n_cols * n_rows;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(n_rows, n_cols);
+ * int[] param_1 = obj.flip();
+ * obj.reset();
+ */
