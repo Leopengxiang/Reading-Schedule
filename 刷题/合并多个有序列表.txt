@@ -1,0 +1,92 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+        mergeLists(lists, lists.length);     
+        return lists[0];   
+    }
+
+    private void mergeLists(ListNode[] lists, int N) {
+        if (N == 1 ) {
+            return;
+        }
+
+        for (int i = 0; i < N; i = i + 2) {
+            if (i + 1 < N) {
+                lists[i / 2] = merge(lists[i], lists[i + 1]);
+            } else {
+                lists[i / 2] = lists[i];
+            }
+        }
+        mergeLists(lists, N - N/2);
+    }
+//     这是我所想的递归解法 每次递归数组中相邻两个链表经行合并，导致数组的有效长度减半。
+//     要分奇偶情况， 代码不够优雅， 下方会给出改进写法
+
+    private ListNode merge(ListNode n1, ListNode n2) {
+        if (n1 == null) {
+            return n2;
+        }
+        if (n2 == null) {
+            return n1;
+        }
+        if (n1.val > n2.val) {
+            n2.next = merge(n1, n2.next);
+            return n2;
+        } else {
+            n1.next = merge(n1.next, n2);
+            return n1;
+        }
+    }
+}
+
+// 改进写法
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+        return mergeLists(lists, 0, lists.length - 1);     
+    }
+
+    private ListNode mergeLists(ListNode[] lists, int lo, int hi) {                   
+       if (lo == hi)         return lists[lo];
+       int mid = lo + (hi - lo) / 2;
+       ListNode left = mergeLists(lists, lo, mid);
+       ListNode right = mergeLists(lists, mid, hi);
+       return merge(left, right);
+    }
+
+    private ListNode merge(ListNode n1, ListNode n2) {
+        if (n1 == null) {
+            return n2;
+        }
+        if (n2 == null) {
+            return n1;
+        }
+        if (n1.val > n2.val) {
+            n2.next = merge(n1, n2.next);
+            return n2;
+        } else {
+            n1.next = merge(n1.next, n2);
+            return n1;
+        }
+    }
+}
