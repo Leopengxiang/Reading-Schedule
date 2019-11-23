@@ -1,0 +1,73 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return isMirror(root.left, root.right);    //判断左子树和右子树是否镜像对称
+    }
+
+    public boolean isMirror(TreeNode le, TreeNode ri) {
+        if (le == null && ri == null) 
+            return true;
+        if (le == null || ri == null) 
+            return false;
+        return le.val == ri.val 
+            && isMirror(le.left, ri.right)
+            && isMirror(le.right, ri.left);
+    }
+}
+
+递归写法
+
+迭代写法
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        LinkedList<TreeNode> queue = new LinkedList();
+        queue.add(root);
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode t1 = queue.poll();
+            TreeNode t2 = queue.poll();
+            if (t1 == null && t2 == null) {
+                continue;
+            } else if (t1 == null || t2 == null) {
+                return false;
+            } else {
+                if (t1.val != t2.val) {
+                    return false;
+                } else {
+                    queue.add(t1.left);
+                    queue.add(t2.right);
+                    queue.add(t1.right);
+                    queue.add(t2.left);
+                    // 出来两个，进去四个。
+                }
+            }
+        }
+        return true;
+    }
+}
+
+// 类似于BFS，但有关键不同。
+
+解题关键在于如何用递归或者迭代表示左子树与右子树是否镜像对称
+当将顶点包括时，可以将问题转换左右子树都为原问题根树的树是否对称。
+如此可以简化代码。
