@@ -1,0 +1,20 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        int profit = 0;   / 记录最大利润
+        int min = Integer.MAX_VALUE;
+	/ min记录的是已经遍历的所有元素中的最低点
+        for (int i = 0; i < prices.length; i++) {
+              / price[i] 是当前遍历元素，当它大于min时，需要计算它是否是新的最大利润
+            if (prices[i] > min) {
+              profit = Math.max(profit, prices[i] - min);
+            } else {
+	/ 当它小于min时，我们就需要更新min了。
+                min = prices[i];
+            }
+        }
+        return profit;
+    }
+}
+
+
+以无限大为最小值，是为归纳数组为空的特殊情况。
