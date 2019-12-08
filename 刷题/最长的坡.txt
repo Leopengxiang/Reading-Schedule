@@ -1,0 +1,44 @@
+class Solution {
+    public int maxWidthRamp(int[] A) {
+        int incline = 0;
+        for (int i = 0; i < A.length - 1; i++) {
+            int lo = i; int hi = A.length - 1;
+            while(hi - lo > incline) {
+                if (A[hi] >= A[lo]) {
+                    incline = Math.max(incline, hi - lo);
+                    break;
+                }
+                hi--;
+            } 
+        }
+        return incline;
+    }
+}
+改进版暴力破解，剔除掉暴力破解的一些情况
+但是当没有坡的时候（最坏情况倒序数组，时间复杂度还是n*n）
+
+class Solution {
+    public int maxWidthRamp(int[] A) {
+        Stack<Integer> stacks = new Stack<>();
+        stacks.push(0);
+        int length = A.length;
+        for (int i = 1; i < length; i++) {
+            if (A[i] <= A[stacks.peek()]) {
+                stacks.push(i);
+                
+            }
+        }
+// 递减栈的构造
+
+        int max = 0;
+        for (int i = length - 1; i >= 0; i--) {
+            while (!stacks.isEmpty() && A[i] >= A[stacks.peek()]) {
+                max = Math.max(max, i - stacks.pop());
+            }
+        }
+        return max;
+    }
+}
+
+
+

@@ -1,0 +1,28 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int sumRootToLeaf(TreeNode root) {
+        return help(root, 0);
+    }
+
+
+    private int help(TreeNode r, int val) {
+        if (r == null) {
+            return 0;
+        }
+        // basecase 1
+        if (r.left == null && r.right == null) 
+            return val * 2 + r.val;
+         // 为叶子时就应该返回了
+        return help(r.right, val * 2 + r.val) + help(r.left, val * 2 + r.val);  
+         // 递归每深一步得更新value值
+         // 当其中一个分支为null时，就会遇到basecase1返回0
+    }
+}
