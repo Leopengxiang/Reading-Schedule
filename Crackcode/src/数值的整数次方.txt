@@ -1,0 +1,28 @@
+public class Solution {
+    public double Power(double base, int exponent) {
+        int unsignExponent = exponent;
+        if (exponent < 0) {
+            unsignExponent = -exponent;
+        }
+        double result = unsignedExponentPower(base, unsignExponent);
+        if (exponent < 0) {
+            return 1 / result;
+        } 
+        return result;
+  }
+    
+    private double unsignedExponentPower(double base, int exponent) {
+        if (exponent == 0) {
+            return 1;
+        }
+        if (exponent == 1) {
+            return base;
+        }
+        double result = unsignedExponentPower(base, exponent >> 1);
+        result *= result;
+        if ((exponent & 1) == 1) {
+            result *= base;
+        }
+        return result;
+    }
+}
