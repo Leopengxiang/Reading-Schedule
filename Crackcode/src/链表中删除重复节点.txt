@@ -1,0 +1,57 @@
+/*
+ public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}
+*/
+public class Solution {
+    public ListNode deleteDuplication(ListNode pHead)
+    {
+        if (pHead == null) {
+            return null;
+        }
+        ListNode preNode = new ListNode(0);
+        preNode.next = pHead;
+        ListNode start = preNode;
+        ListNode end = pHead;
+        while (end != null) {
+            if (end.next != null && end.val == end.next.val) {
+                while (end.next != null && end.val == end.next.val) {
+                    end = end.next;
+                }
+                end = end.next;
+                start.next = end;
+            } else {
+                start = end;
+                end = end.next;
+            }
+        }
+       return preNode.next;
+    }
+}
+
+
+递归解法
+
+public class Solution {
+    public ListNode deleteDuplication(ListNode pHead){
+        if (pHead == null || pHead.next == null) {
+            return pHead;
+        }
+        
+        if (pHead.val == pHead.next.val) {
+            ListNode pRepeat = pHead.next;
+            while (pRepeat != null && pRepeat.val == pHead.val) {
+                pRepeat = pRepeat.next;
+            }
+            return deleteDuplication(pRepeat);
+        } else {
+            pHead.next = deleteDuplication(pHead.next);
+            return pHead;
+        }
+    }
+}
