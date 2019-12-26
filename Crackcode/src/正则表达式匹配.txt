@@ -1,0 +1,43 @@
+public class Solution {
+    public boolean match(char[] str, char[] pattern){
+        if (str == null || pattern == null) {
+            return false;
+        }
+        return matchCore(str, 0, pattern, 0);
+    } 
+    
+    public boolean matchCore(char[] str, int sPointer, char[] pattern, int pPointer) {
+        if (str.length <= sPointer && pattern.length <= pPointer) {
+            return true;
+        }
+        // 都匹配完了
+        if (str.length > sPointer && pattern.length <= pPointer) {
+            return false;
+        }
+        // 字符串没完， 模式匹配完了
+        if (pPointer + 1 < pattern.length && pattern[pPointer + 1] == '*') {
+            // 字符串完了，模式没完
+            if (sPointer >= str.length) {
+                return matchCore(str, sPointer, pattern, pPointer + 2);
+            } else {
+                if (str[sPointer] == pattern[pPointer] || pattern[pPointer] == '.') {
+                    return matchCore(str, sPointer + 1, pattern, pPointer + 2) 
+                       || matchCore(str, sPointer + 1, pattern, pPointer)
+                       || matchCore(str, sPointer, pattern, pPointer + 2);
+                     // 第三个或条件不能删 测试用例如“bbbba",  ".*a*a" 会报错
+                      
+                } else {
+                    return matchCore(str, sPointer, pattern, pPointer + 2);
+                }
+            }
+        }
+        if (sPointer >= str.length) {
+            return false;
+        } else {
+            if (str[sPointer] == pattern[pPointer] || pattern[pPointer] == '.') {
+                return matchCore(str, sPointer + 1, pattern, pPointer + 1);
+            }
+        }
+        return false;
+    }
+}
