@@ -1,0 +1,34 @@
+public class Solution {
+    private static int pointer;
+    public boolean isNumeric(char[] str) {
+        if (str == null || str.length == 0) {
+            return false;
+        }
+        pointer = 0;
+        boolean numeric = scanInteger(str);
+        if (pointer < str.length && str[pointer] == '.') {
+            pointer++;
+            numeric = scanUnsignedInteger(str) || numeric;
+        }
+        if (pointer < str.length && (str[pointer] == 'e' || str[pointer] == 'E')) {
+            pointer++;
+            numeric = numeric && scanInteger(str);
+        }
+        return numeric && pointer == str.length;
+    }
+    
+    private boolean scanInteger(char[] str) {
+        if (pointer < str.length && (str[pointer] == '+' || str[pointer] == '-')) {
+            pointer++;
+        }
+        return scanUnsignedInteger(str);
+    }
+    
+    private boolean scanUnsignedInteger(char[] str) {
+        int before = pointer;
+        while(pointer < str.length && str[pointer] >= '0' && str[pointer] <= '9') {
+            pointer++;
+        }
+        return pointer > before;
+    }
+}
