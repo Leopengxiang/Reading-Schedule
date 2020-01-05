@@ -1,0 +1,30 @@
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+ 
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+    public ListNode FindKthToTail(ListNode head,int k) {
+        if (head == null || k < 1) {
+            return null;
+        }
+// k不能<1
+        ListNode aheadPointer = head;
+        ListNode behindPointer = head;
+        for (int i = 1; i < k; i++) {
+            if (aheadPointer.next == null) {
+                return null ;
+            }
+            aheadPointer = aheadPointer.next;
+        }
+        while (aheadPointer.next != null) {
+            aheadPointer = aheadPointer.next;
+            behindPointer = behindPointer.next;
+        }
+        return behindPointer;
+    }
+}
