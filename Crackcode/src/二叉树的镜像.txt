@@ -1,0 +1,63 @@
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+
+递归解法
+import java.util.*;
+public class Solution {
+    public void Mirror(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+        Mirror(root.left);
+        Mirror(root.right);
+    }
+}
+
+
+
+
+
+
+
+
+迭代解法
+import java.util.*;
+public class Solution {
+    public void Mirror(TreeNode root) {
+        if (root == null) {
+            return ;
+        }
+        Deque<TreeNode> nodes = new ArrayDeque();
+        nodes.add(root);
+        while (!nodes.isEmpty()) {
+            TreeNode pNode = nodes.remove();
+            TreeNode temp = pNode.left;
+            pNode.left = pNode.right;
+            pNode.right = temp;
+            if (pNode.left != null && pNode.right != null) {
+                nodes.add(pNode.left);
+                nodes.add(pNode.right);
+            } else if (pNode.left == null && pNode.right == null) {
+                continue;
+            } else if (pNode.left == null) {
+                nodes.add(pNode.right);
+            } else {
+                nodes.add(pNode.left);
+            }
+        }
+    }
+}
