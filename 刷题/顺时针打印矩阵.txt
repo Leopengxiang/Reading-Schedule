@@ -1,0 +1,44 @@
+import java.util.ArrayList;
+public class Solution {
+    public ArrayList<Integer> printMatrix(int [][] matrix) {
+       if (matrix == null) {
+           return null;
+       }
+       int start = 0;
+       int rows = matrix.length;
+       int columns = matrix[0].length;
+       ArrayList<Integer> result = new ArrayList<Integer>();
+       while (2 * start < rows && 2 * start < columns) {
+           aCircleInMatrix(matrix, start, result);
+           start++;
+       }
+       return result;
+    }
+    
+    private static void aCircleInMatrix(int[][] matrix, int start, ArrayList<Integer> result) {
+       int rows = matrix.length;
+       int columns = matrix[0].length;
+       int endX = columns - 1 - start;
+       int endY = rows - 1 - start;
+       for (int i = start; i <= endX; i++) {
+           result.add(matrix[start][i]);
+       }
+       if (endY > start) {
+           for (int i = start + 1; i <= endY; i++) {
+               result.add(matrix[i][endX]);
+           }
+       }
+       if (endY > start && endX > start) {
+           for (int i = endX - 1; i >= start; i--) {
+               result.add(matrix[endY][i]);
+           }
+       }
+       if (endY > start + 1 && endX > start) {
+           for (int i = endY - 1; i > start; i--) {
+               result.add(matrix[i][start]);
+           }
+       }
+    }
+}
+
+// 问题的分解的，与规律的找寻，比较困难，画图把边界条件理解清楚，代码才能写的清楚
