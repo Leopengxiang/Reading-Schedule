@@ -1,0 +1,59 @@
+import java.util.ArrayList;
+import java.util.Stack;
+
+/*
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    public ArrayList<ArrayList<Integer> > Print(TreeNode pRoot) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        if (pRoot == null) {
+            return result;
+        }
+        Stack<TreeNode>[] stacks = new Stack[2];
+        stacks[0] = new Stack();
+        stacks[1] = new Stack();
+        int current = 0;
+        int next = 1;
+        stacks[current].push(pRoot);
+        ArrayList<Integer> oneLayer = new ArrayList();
+        while (!stacks[current].empty()) {
+            TreeNode poped = stacks[current].pop();
+            oneLayer.add(poped.val);
+            if (current == 0) {
+                if (poped.left != null) {
+                    stacks[next].push(poped.left);
+                }
+                if (poped.right != null) {
+                    stacks[next].push(poped.right);
+                }
+            } else {
+                if (poped.right != null) {
+                    stacks[next].push(poped.right);
+                }
+                if (poped.left != null) {
+                    stacks[next].push(poped.left);
+                }
+            }
+            if (stacks[current].empty()) {
+                result.add(oneLayer);
+                oneLayer = new ArrayList();
+                int temp = current;
+                current = next;
+                next = temp;
+            }
+        }
+        return result;
+    }
+}
+使用两个栈，当前栈为空来控制，循环结束条件，循环内通过当前栈为空来交换当前current和next

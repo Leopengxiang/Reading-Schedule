@@ -1,0 +1,56 @@
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.LinkedList;
+
+
+/*
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    ArrayList<ArrayList<Integer> > Print(TreeNode pRoot) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList();
+        if (pRoot == null) {
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList();
+        ArrayList<Integer> oneLayer = new ArrayList();
+        int toPrint = 1;
+        int nextLevelNum = 0;
+        queue.add(pRoot);
+        while(!queue.isEmpty()) {
+            TreeNode poped = queue.remove();
+            if (poped.left != null) {
+                queue.add(poped.left);
+                nextLevelNum++;
+            }
+            if (poped.right != null) {
+                queue.add(poped.right);
+                nextLevelNum++;
+            }
+            oneLayer.add(poped.val);
+            toPrint--;
+            if (toPrint == 0) {
+                result.add(oneLayer);
+                oneLayer = new ArrayList<Integer>();
+                toPrint = nextLevelNum;
+                nextLevelNum = 0;
+            }
+        }
+        return result;
+    }
+   
+}
+
+加入两个记录变量
+toPrint 本层还有多少个待打印
+nextLevelNumber 下一层需要打印多少个
