@@ -1,0 +1,54 @@
+/*
+public class RandomListNode {
+    int label;
+    RandomListNode next = null;
+    RandomListNode random = null;
+
+    RandomListNode(int label) {
+        this.label = label;
+    }
+}
+*/
+public class Solution {
+    public RandomListNode Clone(RandomListNode pHead){
+        if (pHead == null) {
+            return null;
+        }
+        cloneNode(pHead);
+        connectRandomNode(pHead);
+        return splitNodes(pHead);
+    }
+    
+    private static void cloneNode(RandomListNode node) {
+       while (node != null) {
+           RandomListNode clonedNode = new RandomListNode(node.label);
+           clonedNode.next = node.next;
+           node.next = clonedNode;
+           node = clonedNode.next;
+       }
+    }
+    
+    private static void connectRandomNode(RandomListNode node) {
+        while (node != null) {
+            RandomListNode clonedNode = node.next;
+            if (node.random != null) {
+                clonedNode.random = node.random.next;
+            }
+            node = clonedNode.next;
+        }
+    }
+    
+    private static RandomListNode splitNodes(RandomListNode node) {
+        RandomListNode pHead = node.next;
+        RandomListNode pNode = pHead;
+        node.next = pHead.next;
+        node = node.next;
+        while (node != null) {
+            pNode.next= node.next;
+            pNode = pNode.next;
+            node.next = pNode.next;
+            node = node.next;
+        }
+        return pHead;
+    }
+}

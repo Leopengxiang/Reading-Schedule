@@ -1,0 +1,36 @@
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    private TreeNode endOfList;
+    private TreeNode realHead;
+    public TreeNode Convert(TreeNode pRootOfTree) {
+        convertSub(pRootOfTree);
+        return realHead;
+    }
+    private void convertSub(TreeNode pNode) {
+        if (pNode == null) {
+            return;
+        }
+        convertSub(pNode.left);
+        if (realHead == null) {
+            realHead = pNode;
+            endOfList = pNode;
+        } else {
+            endOfList.right = pNode;
+            pNode.left = endOfList;
+            endOfList = pNode;
+        }
+        convertSub(pNode.right);
+    }
+}
