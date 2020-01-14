@@ -1,0 +1,54 @@
+/*
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    String Serialize(TreeNode root) {
+        if (root == null) {
+            return "";
+        }
+        StringBuilder str = new StringBuilder();
+        Serialize(root, str); 
+        return str.toString();
+    }
+    private void Serialize(TreeNode root, StringBuilder str) {
+        if (root == null) {
+             str.append("#!");
+             return;
+        }
+        str.append(root.val);
+        str.append("!");
+        Serialize(root.left, str);
+        Serialize(root.right, str);
+  }
+
+    TreeNode Deserialize(String str) {
+        if (str == null || str.length() == 0) {
+            return null;
+        }
+        String[] nodes = str.split("!");
+        return DeserializeHelp(nodes);
+  }
+    int index = -1;
+    private TreeNode DeserializeHelp(String[] nodes) {
+       index++;
+       if (!nodes[index].equals("#")) {
+           TreeNode root = new TreeNode(0);
+           root.val = Integer.parseInt(nodes[index]);
+           root.left = DeserializeHelp(nodes);
+           root.right = DeserializeHelp(nodes);
+           return root;
+       }
+       return null;
+    }
+}
+当访问到叶子节点是两个 ## 会让将其的左右子节点设为null

@@ -1,0 +1,34 @@
+import java.util.ArrayList;
+import java.util.TreeSet;
+public class Solution {
+    public ArrayList<String> Permutation(String str) {
+       ArrayList<String> result = new ArrayList();
+        if (str == null || str.length() == 0) {
+            return result;
+        }
+        TreeSet<String> resultSet = new TreeSet();
+        char[] chars = str.toCharArray();
+        Permutation(chars, 0, resultSet);
+        result.addAll(resultSet);
+        return result;
+    }
+    
+    private void Permutation(char[] chars, int begin, TreeSet result) {
+        if (begin == chars.length - 1) {
+            result.add(String.valueOf(chars));
+            return;
+        }
+        for (int i = begin; i < chars.length; i++) {
+            swap(chars, i, begin);
+            Permutation(chars, begin+1, result);
+            swap(chars, i, begin);
+        }
+        
+    }
+    
+    private void swap(char[] chars, int i, int j) {
+        char temp = chars[i];
+        chars[i] = chars[j];
+        chars[j] = temp;
+    }
+}
