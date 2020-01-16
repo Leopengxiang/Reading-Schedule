@@ -1,0 +1,89 @@
+import java.util.ArrayList;
+public class Solution {
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+        ArrayList<Integer> result = new ArrayList();
+        if (input == null || k < 1 || input.length < k) {
+            return result;
+        }
+        int lo = 0;
+        int hi = input.length - 1;
+        int index = partition(input, lo, hi);
+        while (index != k - 1) {
+            if (index > k - 1) {
+                hi = index - 1;
+                index = partition(input, lo, hi);
+            } else {
+                lo = index + 1;
+                index = partition(input, lo, hi);
+            }
+        } 
+        for (int i = 0; i < k; i++) {
+            result.add(input[i]);
+        }
+        return result;
+    }
+    
+    private int partition(int[]arr, int lo, int hi) {
+        if (lo >= hi) {
+            return hi;
+        }
+        int i = lo, j = hi + 1;
+        int ranIndex = (int)(lo + Math.random() * (hi - lo));
+        swap(arr, lo, ranIndex);
+        int val = arr[lo];
+        while (true) {
+            while (arr[++i] < val) {
+                if (i == hi) {
+                    break;
+                }
+            }
+            while (arr[--j] > val) {
+                if (j == lo) {
+                    break;
+                }
+            }
+            if (i >= j) 
+                break;
+            swap(arr, i, j);
+        }
+        swap(arr, j, lo);
+        return j;
+    }
+    
+    private void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
+
+// 法一 partition, 找到第k小的数字
+
+import java.util.*;
+public class Solution {
+    public ArrayList<Integer> GetLeastNumbers_Solution(int[] input, int k) {
+        ArrayList<Integer> result = new ArrayList<>();
+        if (input == null || k < 1 || input.length < k) {
+            return result;
+        }
+        
+        PriorityQueue<Integer> pq = new PriorityQueue(new Comparator<Integer>() {
+            public int compare(Integer o1, Integer o2) {
+                return o2 - o1;
+            }
+        } );
+        
+        for (int i = 0; i < input.length; i++) {
+            if (i < k) {
+               pq.add(input[i]);
+            } else {
+                if (input[i] < pq.peek()) {
+                    pq.remove();
+                    pq.add(input[i]);
+                }
+            }
+        }
+        result.addAll(pq);
+        return result;
+    }
+}

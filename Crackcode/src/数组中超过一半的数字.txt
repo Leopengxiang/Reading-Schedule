@@ -1,0 +1,106 @@
+public class Solution {
+    public int MoreThanHalfNum_Solution(int [] array) {
+         if (array == null || array.length == 0) {
+             return 0;
+         }
+         int middle = array.length / 2;
+         int lo = 0, hi = array.length - 1;
+         int index = partition(array, lo, hi);
+         while (index != middle) {
+             if (index > middle) {
+                 hi = index - 1;  // 这个赋值可不能忘 
+                 index = partition(array, lo, hi);
+             } else {
+                 lo = index + 1; // 这个赋值可不能忘 ，不然死循环
+                 index = partition(array, lo, hi);
+             }
+         }
+         int result = array[middle];
+         if (!checkMorethanhalf(array, result))
+             return 0;
+         return result;
+    }
+    
+    private int partition(int[] arr, int lo, int hi) {
+        if (lo >= hi) {
+            return hi;      // 当arr中有效值只有一个时，直接返回
+        }
+        int i = lo, j = hi + 1;
+        int ranIndex = (int) (lo + Math.random() * hi);
+        swap(arr, lo, ranIndex);
+        int val = arr[lo];
+        while (true) {
+            while (arr[++i] < val){
+                if (i == hi) 
+                    break;
+            }
+            while (arr[--j] > val){
+                if (j == lo) {
+                    break;
+                }
+            }
+            if (i >= j) {
+                break;
+            }
+            swap(arr, i, j);
+        }
+        swap(arr, j, lo);
+        return j;
+    }
+    
+    private void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    
+    private boolean checkMorethanhalf(int[] arr, int number) {
+        int times = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == number) {
+                times++;
+            }
+        }
+        return times * 2 > arr.length;
+    }
+    
+}
+
+
+解法二：
+
+
+public class Solution {
+    private static Random random = new Random();
+    public int MoreThanHalfNum_Solution(int [] array) {
+         if (array == null || array.length == 0) {
+             return 0;
+         }
+         int number = array[0];
+         int times = 1;
+         for (int i = 1; i < array.length; i++) {
+             if (array[i] == number) {
+                 times++;
+             } else {
+                 times--;
+             }
+             if (times < 0) {
+                 times = 1;
+                 number = array[++i];
+             }
+         }
+         if (times <= 0 || !checkMorethanhalf(array, number))
+             return 0;
+         return number;
+    }
+    private boolean checkMorethanhalf(int[] arr, int number) {
+        int times = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == number) {
+                times++;
+            }
+        }
+        return times * 2 > arr.length;
+    }
+    
+}
