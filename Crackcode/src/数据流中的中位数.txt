@@ -1,0 +1,78 @@
+import java.util.*;
+
+public class Solution {
+    private PriorityQueue<Integer> minPq = new PriorityQueue();
+    private PriorityQueue<Integer> maxPq = new PriorityQueue(new Comparator<Integer>() {
+        public int compare(Integer o1, Integer o2) {
+            return o2 - o1;
+        }
+    });
+
+// new Comparator 时类型变量不能忘了
+    private int size = 0;
+
+    public void Insert(Integer num) {
+        size++;
+        if (size % 2 != 0) {
+            minPq.add(num);
+        } else {
+            if (num > minPq.peek()) {
+                minPq.add(num);
+                maxPq.add(minPq.remove());
+            } else {
+                maxPq.add(num);
+            }
+        }
+    }
+
+    public Double GetMedian() {
+        if (size == 0) {
+            return null;
+        }
+        if (size == 1) {
+            return (double)minPq.peek();
+        }
+        if (size % 2 == 0) {
+            return (double)((maxPq.peek() + minPq.peek()) / 2.0);
+        } else {
+            return (double) (Math.max(maxPq.peek(), minPq.peek()));  // 为奇数时无法确保，最后一次进队minPq 比maxPq 大。
+        }
+    }
+}
+
+数据量大时，我觉得会更快，因为没有了那么多的出队，进队。
+
+修正版
+import java.util.*;
+
+public class Solution {
+    private PriorityQueue<Integer> minPq = new PriorityQueue();
+    private PriorityQueue<Integer> maxPq = new PriorityQueue(new Comparator<Integer>() {
+        public int compare(Integer o1, Integer o2) {
+            return o2 - o1;
+        }
+    });
+    private int size = 0;
+
+    public void Insert(Integer num) {
+        size++;
+        if (size % 2 != 0) {
+            maxPq.add(num);
+            minPq.add(maxPq.remove());   // 洗涤过滤，想进minPq, 先从maxPq走一遭
+        } else {
+            minPq.add(num);
+            maxPq.add(minPq.remove());
+        }
+    }
+
+    public Double GetMedian() {
+        if (size == 0) {
+            return null;
+        }
+        if (size % 2 == 0) {
+            return (double)((maxPq.peek() + minPq.peek()) / 2.0);
+        } else {
+            return (double) (minPq.peek());
+        }
+    }
+}

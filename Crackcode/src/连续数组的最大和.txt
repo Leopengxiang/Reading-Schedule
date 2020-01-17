@@ -1,0 +1,19 @@
+public class Solution {
+    public int FindGreatestSumOfSubArray(int[] array) {
+        if (array == null || array.length == 0) {
+            return 0;
+        }
+        int preMaxSum = array[0];
+        int currentSum = 0;
+        for (int i = 0; i < array.length; i++) {
+            currentSum = currentSum + array[i];
+            if (currentSum > preMaxSum) {
+                preMaxSum = currentSum;
+            }
+            if (currentSum < 0) {
+                currentSum = 0;
+            }
+        }
+        return preMaxSum;
+    }
+}
